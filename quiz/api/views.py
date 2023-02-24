@@ -4,10 +4,11 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializer import QuizSerializer,UserSerializer,RegisterSerializer,UsersSerializer
+from .serializer import QuizSerializer,RegisterSerializer,UsersSerializer,UserprofileSerializer
 from quiz.models import Quiz,Question,QuizResult
 from django.contrib.auth.models import User
 from rest_framework import filters
+
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -47,7 +48,6 @@ class ObtainTokenPairWithCookieView(TokenObtainPairView):
 
 
 
-
 class LogoutView(APIView):
     def post(self, request, *args, **kwargs):
         response = JsonResponse({'message': 'Successfully logged out'}, status=200)
@@ -65,19 +65,23 @@ class QuizCreateAPIView(generics.CreateAPIView):
 
 
 class QuizListAPIView(generics.ListAPIView):
+    queryset=Quiz.objects.all()
     serializer_class = QuizSerializer
     # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['topic','created_at','difficulty']
 
 
-    def get_queryset(self):
-        current_user = self.request.user
-        return Quiz.objects.filter(created_by=current_user)
+    # def get_queryset(self):
+    #     current_user = self.request.user
+    #     print(current_user)
+    #     return Quiz.objects.filter(created_by=current_user)
 
 
 class UserProfileAPIView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = UserSerializer
+    serializer_class = UserprofileSerializer
 
     def get(self, request):
         user = request.user
@@ -86,7 +90,7 @@ class UserProfileAPIView(generics.GenericAPIView):
         quiz_serializer = QuizSerializer(quizzes, many=True)
         data = {
             'user' : serializer.data,
-            'quizzes' : quiz_serializer.data
+            # 'quizzes' : quiz_serializer.data  # to avoid repetition of quizs
         }
 
         return Response(data)

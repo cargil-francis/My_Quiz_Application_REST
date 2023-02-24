@@ -3,7 +3,22 @@ from rest_framework import serializers
 from ..models import Quiz, Question, Choice,User
 
 
-        
+class UsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email')
+
+# Register Serializer
+class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
+
+        return user      
 
 
 class ChoiceSerializer(serializers.ModelSerializer):
@@ -21,11 +36,11 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class QuizSerializer(serializers.ModelSerializer):
-    questions = QuestionSerializer(source = 'question',many=True)
+   # questions = QuestionSerializer(source = 'question',many=True)
 
     class Meta:
         model = Quiz
-        fields = ['title', 'topic', 'difficulty', 'questions', 'created_by']
+        fields = ['title', 'topic', 'difficulty', 'created_by']
 
     def create(self, validated_data):
         questions_data = validated_data.pop('question')
@@ -41,34 +56,24 @@ class QuizSerializer(serializers.ModelSerializer):
         return quiz
 
 
-class UserSerializer(serializers.ModelSerializer):
-    quiz = QuizSerializer(source ='quiz.title',many =True)
+class UserprofileSerializer(serializers.ModelSerializer):
+    quiz= QuizSerializer(source = 'user',many =True)
     
+    # def get_quiz(self, obj):
+    #     return obj.quiz.values('title')
     
     class Meta:
         model = User
-        fields = ['username','title', 'topic', 'difficulty', 'created_by','quiz']
+        fields = ['username','email','quiz']
 
 
 
 
 
-class UsersSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'email')
 
-# Register Serializer
-class RegisterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'email', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
 
-    def create(self, validated_data):
-        user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
 
-        return user
+
    
 
 

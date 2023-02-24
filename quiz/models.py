@@ -8,7 +8,7 @@ class Quiz(models.Model):
     difficulty = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
 
     def __str__(self):
         return self.title
