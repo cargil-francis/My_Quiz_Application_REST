@@ -36,5 +36,5 @@ class QuizResult(models.Model):
     score = models.IntegerField()
     date_taken = models.DateTimeField(auto_now_add=True)
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.user.username} - {self.quiz.title} - {self.score}"

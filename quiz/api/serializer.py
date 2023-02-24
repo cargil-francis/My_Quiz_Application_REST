@@ -1,6 +1,10 @@
 from rest_framework import serializers
 
-from ..models import Quiz, Question, Choice
+from ..models import Quiz, Question, Choice,User
+
+
+        
+
 
 class ChoiceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,6 +39,37 @@ class QuizSerializer(serializers.ModelSerializer):
                 Choice.objects.create(question=question, **choice_data)
 
         return quiz
+
+
+class UserSerializer(serializers.ModelSerializer):
+    quiz = QuizSerializer(source ='quiz.title',many =True)
+    
+    
+    class Meta:
+        model = User
+        fields = ['username','title', 'topic', 'difficulty', 'created_by','quiz']
+
+
+
+
+
+class UsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email')
+
+# Register Serializer
+class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
+
+        return user
+   
 
 
 # class QuizSerializer(serializers.ModelSerializer):
