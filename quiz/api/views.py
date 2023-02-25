@@ -73,10 +73,7 @@ class QuizListAPIView(generics.ListAPIView):
     search_fields = ['topic','created_at','difficulty']
 
 
-    # def get_queryset(self):
-    #     current_user = self.request.user
-    #     print(current_user)
-    #     return Quiz.objects.filter(created_by=current_user)
+
 
 
 class UserProfileAPIView(generics.GenericAPIView):
@@ -103,6 +100,8 @@ class QuizTakingAPIView(generics.GenericAPIView):
         quiz = Quiz.objects.get(pk = quiz_id)
         user = request.user
 
+        if QuizResult.objects.filter(user=user, quiz=quiz).exists():
+            return Response({'message': 'Quiz has already been taken by the user'})
 
         total_questions = quiz.question.count()
         correct_answers = 0
@@ -155,28 +154,6 @@ class QuizTakingAPIView(generics.GenericAPIView):
 
 
 
-# class UserListView(generics.ListAPIView):
-#         queryset = User.objects.all()
-#         # queryset = Quiz.objects.all()
-#         serializer_class = UserSerializer
-
-#         def list(self, request):
-#             queryset = self.get_queryset()
-#             serializer = UserSerializer(queryset, many=True)
-#             return Response(serializer.data)
-
-# class UserProfileAPIView(generics.RetrieveAPIView):
-#     serializer_class = UserSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def get_object(self):
-#         return self.request.user
-
-#     def get_serializer_context(self):
-#         user = self.get_object()
-#         context = super().get_serializer_context()
-#         context['quizzes'] = Quiz.objects.filter(created_by=user)
-#         return context
        
         
         
