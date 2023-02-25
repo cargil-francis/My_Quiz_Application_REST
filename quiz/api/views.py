@@ -5,7 +5,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializer import QuizSerializer,RegisterSerializer,UsersSerializer,UserprofileSerializer
-from quiz.models import Quiz,Question,QuizResult
+from quiz.models import Quiz,Question,QuizResult,Choice
 from django.contrib.auth.models import User
 from rest_framework import filters
 
@@ -94,6 +94,54 @@ class UserProfileAPIView(generics.GenericAPIView):
         }
 
         return Response(data)
+
+class QuizTakingAPIView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = QuizSerializer
+
+    def post(self,request,quiz_id):
+        quiz = Quiz.objects.get(pk = quiz_id)
+        user = request.user
+
+
+        total_questions = quiz.question.count()
+        correct_answers = 0
+        for question in quiz.question.all():
+            answer = request.data.get(str(question.id))
+            if not answer :
+                return Response({'message' : f'answer is missing for question { quiestion.id }'})
+            check_answers = Choice.objects.filter(question_id=question.id)  #filter out choices with question_id
+            choice_num = 0
+            for check_answer in check_answers:                              #Get the correct choice_num          
+                if check_answer.is_correct == True:
+                    choice_num += 1
+                    break
+                choice_num += 1
+
+            # choice = Choice.objects.get(pk = answer)
+            if choice_num == int(answer) :
+                correct_answers += 1
+
+        score = int((correct_answers/total_questions)*100)
+        
+        quiz_result = QuizResult.objects.create(user = user, quiz = quiz, score = score)
+
+
+        
+        return Response({'message' : f'Your score is { score }'})
+
+
+
+
+
+
+
+        
+
+    
+  
+
+
 
 
 

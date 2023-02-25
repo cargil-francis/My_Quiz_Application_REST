@@ -27,12 +27,16 @@ class Choice(models.Model):
     is_correct = models.BooleanField(default=False)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
 
-    def __str__(self):
-        return self.text
+    # def __int__(self):
+    #     if self.is_correct == True:
+    #         return 1
+    #     else:
+    #         return 0
+        # return str(self.is_correct)
 
 class QuizResult(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='quiz')
     score = models.IntegerField()
     date_taken = models.DateTimeField(auto_now_add=True)
 
