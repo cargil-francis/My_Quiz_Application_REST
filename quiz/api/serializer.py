@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ..models import Quiz, Question, Choice,User
+from ..models import Quiz, Question, Choice, User, QuizResult
 
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -63,6 +63,15 @@ class UserprofileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username','email','quiz']
+
+
+class QuizResultSerializer(serializers.ModelSerializer):
+    quiz_title = serializers.CharField(source='quiz.title', read_only=True)
+
+    class Meta:
+        model = QuizResult
+        fields = ['quiz_title','score','quiz_id', ]
+
 
 
 

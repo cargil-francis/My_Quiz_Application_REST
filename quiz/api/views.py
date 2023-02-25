@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializer import QuizSerializer,RegisterSerializer,UsersSerializer,UserprofileSerializer
+from .serializer import QuizSerializer,RegisterSerializer,UsersSerializer,UserprofileSerializer,QuizResultSerializer
 from quiz.models import Quiz,Question,QuizResult,Choice
 from django.contrib.auth.models import User
 from rest_framework import filters
@@ -128,6 +128,39 @@ class QuizTakingAPIView(generics.GenericAPIView):
 
         
         return Response({'message' : f'Your score is { score }'})
+
+
+
+class QuizResultAPIView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = QuizResultSerializer
+
+    def get(self, request):
+        user = request.user
+        quiz_results = QuizResult.objects.filter(user = user)
+        serializer = QuizResultSerializer(quiz_results, many=True)
+        data = {
+            'user' : serializer,
+            
+        }
+
+        return Response(serializer.data)
+
+
+    # def get_queryset(self):
+    #     queryset = QuizResult.objects.filter(user = user)
+    #     # user = request.user
+    #     # quiz_results = QuizResult.objects.filter(user = user)
+    #     # serializer = QuizResultSerializer.get_serializer(quiz_results,many=True)
+    #     # data = serializer.data
+    #     # return Response(queryset)
+    #     return queryset
+
+       
+
+
+    
+
 
 
 
