@@ -1,10 +1,10 @@
 from rest_framework import generics
-from rest_framework.generics import CreateAPIView,ListAPIView
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.generics import CreateAPIView,ListAPIView,RetrieveUpdateDestroyAPIView, DestroyAPIView
+from rest_framework.permissions import IsAuthenticated,AllowAny,IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializer import QuizSerializer,RegisterSerializer,UsersSerializer,UserprofileSerializer,QuizResultSerializer
+from .serializer import QuizSerializer,RegisterSerializer,UsersSerializer,UserprofileSerializer,QuizResultSerializer, UpdateModelSerializer
 from quiz.models import Quiz,Question,QuizResult,Choice
 from django.contrib.auth.models import User
 from rest_framework import filters
@@ -147,16 +147,38 @@ class QuizResultAPIView(generics.GenericAPIView):
         return Response(serializer.data)
 
 
-    # def get_queryset(self):
-    #     queryset = QuizResult.objects.filter(user = user)
-    #     # user = request.user
-    #     # quiz_results = QuizResult.objects.filter(user = user)
-    #     # serializer = QuizResultSerializer.get_serializer(quiz_results,many=True)
-    #     # data = serializer.data
-    #     # return Response(queryset)
-    #     return queryset
+ 
+class AdminUpdateView(RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UpdateModelSerializer
+    lookup_field = 'id'
+    permission_classes = [IsAdminUser]
+
 
        
+
+
+
+class AdminCreateView(CreateAPIView):
+    serializer_class = RegisterSerializer
+    permission_classes = [IsAdminUser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        response_data = {
+            "message": "User created successfully",
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email
+            }
+        }
+        return Response(response_data)
+
+    
 
 
     

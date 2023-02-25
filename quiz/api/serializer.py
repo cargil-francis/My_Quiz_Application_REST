@@ -70,7 +70,15 @@ class QuizResultSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = QuizResult
-        fields = ['quiz_title','score','quiz_id', ]
+        fields = ['quiz_title','score','quiz_id']
+
+
+
+class UpdateModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+       
+        fields = [ 'username', 'email','password']
 
 
 
