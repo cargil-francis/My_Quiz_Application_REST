@@ -189,8 +189,11 @@ class QuizAnalyticsAPIView(generics.GenericAPIView):
 
     def get(self, request):
         user = request.user
-        
-        quizzes = Quiz.objects.all()
+        if request.user.is_superuser:          #if user is admin
+            quizzes = Quiz.objects.all()
+        else:
+            quizzes = Quiz.objects.filter(created_by = user)    #if not admin
+            print(quizzes)
         analytics = []
 
         for quiz in quizzes:
