@@ -1,13 +1,13 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
-from .views import QuizCreateAPIView,QuizListAPIView, UserProfileAPIView, RegisterAPIView,QuizTakingAPIView,QuizResultAPIView
+from .views import QuizCreateAPIView,QuizListAPIView, UserProfileAPIView, RegisterAPIView,QuizTakingAPIView,QuizResultAPIView,QuizAnalyticsAPIView
 from .views import AdminUpdateView,AdminCreateView
 
 
 
 urlpatterns = [
 
-
+    path('quizanalytics/',QuizAnalyticsAPIView.as_view(), name='quizanalytics'),
     path('quizresult/',QuizResultAPIView.as_view(), name='quizresult'),
     path('quiztaking/<int:quiz_id>',QuizTakingAPIView.as_view(), name='quiztaking'),
     path('listquiz/',QuizListAPIView.as_view(), name='quizlist-view'),
