@@ -37,9 +37,13 @@ class LogoutView(APIView):
 
 
 class AdminUserListAPIView(generics.ListAPIView):     #adminUSerlistview Add_On feature
-    queryset = User.objects.all()
-    serializer_class=UsersSerializer
     permission_classes = [IsAuthenticated,IsAdminUser] 
+    serializer_class = UsersSerializer
+    queryset = User.objects.all()
+
+    
+
+
 
 
 class AdminCreateView(CreateAPIView):
