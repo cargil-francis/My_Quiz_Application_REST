@@ -112,6 +112,8 @@ class QuizCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
 
+        return Response(serializer.data)
+
 #Quiz listing
 
 class QuizListAPIView(generics.ListAPIView):
