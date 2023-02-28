@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from .views import QuizCreateAPIView,QuizListAPIView, UserProfileAPIView, RegisterAPIView,QuizTakingAPIView,QuizResultAPIView,QuizAnalyticsAPIView
-from .views import AdminUpdateView,AdminCreateView
+from .views import AdminUpdateView,AdminCreateView,AdminUserListAPIView
 
 
 
@@ -19,6 +19,7 @@ urlpatterns = [
 
     path('adminuserupdate/<int:id>', AdminUpdateView.as_view(), name='adminupdate'),
     path('adminusercreate/', AdminCreateView.as_view(), name='admincreate'),
+    path('adminlistusers/',AdminUserListAPIView.as_view(),name='adminuserview'),
     
 
 

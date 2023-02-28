@@ -32,7 +32,15 @@ class LogoutView(APIView):
         return response
 
 
- #Admin user management      
+ #Admin user management   
+    
+
+
+class AdminUserListAPIView(generics.ListAPIView):     #adminUSerlistview Add_On feature
+    queryset = User.objects.all()
+    serializer_class=UsersSerializer
+    permission_classes = [IsAuthenticated,IsAdminUser] 
+
 
 class AdminCreateView(CreateAPIView):
     serializer_class = RegisterSerializer
@@ -60,6 +68,7 @@ class AdminUpdateView(RetrieveUpdateDestroyAPIView):
     serializer_class = UpdateModelSerializer
     lookup_field = 'id'
     permission_classes = [IsAdminUser]
+
 
 
 
@@ -236,6 +245,10 @@ class QuizAnalyticsAPIView(generics.GenericAPIView):
             })
     
         return Response(analytics)
+    
+
+             
+   
 
 
 
