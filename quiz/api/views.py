@@ -117,11 +117,24 @@ class QuizCreateAPIView(generics.CreateAPIView):
 #Quiz listing
 
 class QuizListAPIView(generics.ListAPIView):
-    queryset=Quiz.objects.all()
     serializer_class = QuizSerializer
     permission_classes = [IsAuthenticated]                 # authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     search_fields = ['topic','created_at','difficulty']
+
+
+    def get_queryset(self):
+        user = self.request.user
+        print(user)
+        if user.is_superuser: 
+            queryset=Quiz.objects.all()
+        else:
+            queryset=Quiz.objects.filter(created_by=user)
+        return queryset
+        
+    
+
+
 
 
 #Quiz taking
