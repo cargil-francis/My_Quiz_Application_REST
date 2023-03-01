@@ -170,10 +170,9 @@ class QuizTakingAPIView(generics.GenericAPIView):
             if not answer :                                            
                 return Response({'message' : f'answer is missing for question { quiestion.id }'})
             check_answers = Choice.objects.filter(question_id=question.id)  #filter out choices with question_id
-            choice_num = 0
+            choice_num = 1
             for check_answer in check_answers:                              #Get the correct choice_num          
                 if check_answer.is_correct == True:
-                    choice_num += 1
                     break
                 choice_num += 1
 
