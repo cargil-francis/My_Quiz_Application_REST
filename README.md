@@ -106,6 +106,14 @@ Follow the given steps to run the project in your localhost.
 ## Usage
 
 Screenshots of the project using Postman
+*User Registeration
+![Screenshot from 2023-03-03 03-19-00](https://user-images.githubusercontent.com/96044398/222565868-763c8400-bc26-4942-bc30-77066fdf11fd.png)
+
+*Login Using JWT Token
+![Screenshot from 2023-03-03 03-19-00](https://user-images.githubusercontent.com/96044398/222567093-fc256c86-d55e-4ee4-8cb9-45dd04cde1b4.png)
+ 
+*User Profile
+![Screenshot from 2023-03-03 03-26-31](https://user-images.githubusercontent.com/96044398/222567679-27bb6a42-7b49-4089-8a8a-79ac46f889a3.png)
 
 * Quiz Analytics
 ![Screenshot from 2023-02-26 23-31-28](https://user-images.githubusercontent.com/96044398/221428024-73ff2e4b-e2ec-47a0-9aac-300339e2a416.png)
