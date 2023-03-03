@@ -9,6 +9,7 @@ from quiz.models import Quiz,Question,QuizResult,Choice
 from django.contrib.auth.models import User
 from rest_framework import filters
 from django.db.models import Avg
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -23,13 +24,21 @@ class ObtainTokenPairWithCookieView(TokenObtainPairView):
         response.set_cookie('jwt', token, max_age=3600, httponly=True)
         return response
 
-#Logout
+# Logout
 
-class LogoutView(APIView):
-    def post(self, request, *args, **kwargs):
-        response = JsonResponse({'message': 'Successfully logged out'}, status=200)
-        response.delete_cookie('jwt')
-        return response
+# class LogoutView(APIView):
+#     def post(self, request, *args, **kwargs):
+#         response = JsonResponse({'message': 'Successfully logged out'}, status=200)
+#         response.delete_cookie('jwt')
+#         return response
+
+
+
+class TokenBlacklistView(APIView):
+    def post(self, request):
+        token = RefreshToken(request.data.get('refresh'))
+        token.blacklist()
+        return Response("Success")
 
 
  #Admin user management   
