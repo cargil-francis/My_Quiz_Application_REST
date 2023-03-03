@@ -121,6 +121,10 @@ Screenshots of the project using Postman
 * Quiz Listing
 ![Screenshot from 2023-02-26 23-32-27](https://user-images.githubusercontent.com/96044398/221428034-10f9b7e1-520a-41bc-977d-6e210be228dd.png)
 
+*Token blacklist
+![Screenshot from 2023-03-03 12-14-50](https://user-images.githubusercontent.com/96044398/222651928-4f8658ef-18c2-4c4c-a966-d0846a4bb7bb.png)
+
+
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
